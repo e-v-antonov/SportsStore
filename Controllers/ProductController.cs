@@ -23,19 +23,23 @@ namespace SportsStore.Controllers
         /// Визуализация стандартного представления
         /// </summary>
         /// <returns></returns>
-        public ViewResult List(int productPage = 1)
+        public ViewResult List(string category, int productPage = 1)
             => View(new ProductsListViewModel
             {
                 Products = repository.Products
+                .Where(p => category == null || p.Category == category)
                 .OrderBy(p => p.ProductID)
                 .Skip((productPage - 1) * PageSize) //пропускаем товары до начала выбранной странницы
                 .Take(PageSize),    //выбираем количество товаров
+
                 PagingInfo = new PagingInfo
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
                     TotalItems = repository.Products.Count()
-                }
+                },
+
+                CurrentCategory = category
             });
     }
 }
