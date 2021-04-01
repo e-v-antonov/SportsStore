@@ -36,12 +36,34 @@ namespace SportsStore
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("catpage",
+                    "{category}/Page{productPage:int}",
+                    new { Controller = "Product", action = "List" });
+
+                endpoints.MapControllerRoute("page",
+                    "Page{productPage:int}",
+                    new { Controller = "Product", action = "List", productPge = 1 });
+
+                endpoints.MapControllerRoute("category",
+                    "{category}",
+                    new { Controller = "Product", action = "List", productPge = 1 });
+
                 endpoints.MapControllerRoute("pagination",
                     "Products/Page{productPage}",
                     new { Controller = "Product", action = "List" });
+                
                 endpoints.MapControllerRoute("default",
                     "{controller=Product}/{action=List}/{id?}");
             });
+
+            #region Сводка по маршрутам
+            /* Сводка по маршрутам
+             * / - Выводит первую страницу списка товаров всех категорий
+             * слэш + Page2 - Выводит указанную страницу отображая товары всех категорий
+             * слэш + Soccer - Выводит первую страницу товаров указанной категории
+             * слэш + Soccer + слэш + Page2 - Выводт указанную страницу товаров заданной категории
+             */
+            #endregion
 
             SeedData.EnsurePopulated(app);
         }
