@@ -4,7 +4,7 @@ using SportsStore.Models;
 namespace SportsStore.Models.ViewModels
 {
     /// <summary>
-    /// Класс,который содержит данные для передачи из контроллера в представление
+    /// Класс модели представления для передачи данных о списке товаров
     /// </summary>
     public class ProductsListViewModel
     {

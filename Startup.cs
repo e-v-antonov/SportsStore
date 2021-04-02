@@ -25,7 +25,6 @@ namespace SportsStore
             });
             services.AddScoped<IProductRepository, EFProductRepository>();
 
-            services.AddRazorPages();
             services.AddDistributedMemoryCache();
             services.AddSession();
         }
