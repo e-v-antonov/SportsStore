@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportsStore.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace SportsStore
 {
@@ -24,6 +25,9 @@ namespace SportsStore
                 options.UseSqlServer(Configuration.GetConnectionString("SportsStoreConnection"));
             });
             services.AddScoped<IProductRepository, EFProductRepository>();
+
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddDistributedMemoryCache();
             services.AddSession();
