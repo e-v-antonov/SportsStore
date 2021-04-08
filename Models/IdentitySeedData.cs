@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace SportsStore.Models
 {
@@ -14,7 +16,17 @@ namespace SportsStore.Models
 
         public static async void EnsurePopulated(IApplicationBuilder app)
         {
+            AppIdentityDbContext context = app.ApplicationServices
+                .CreateScope().ServiceProvider
+                .GetRequiredService<AppIdentityDbContext>();
+
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+
             UserManager<IdentityUser> userManager = app.ApplicationServices
+                .CreateScope().ServiceProvider
                 .GetRequiredService<UserManager<IdentityUser>>();
 
             IdentityUser user = await userManager.FindByIdAsync(adminUser);
@@ -22,8 +34,22 @@ namespace SportsStore.Models
             if (user == null)
             {
                 user = new IdentityUser("Admin");
+                user.Email = "admin@example.com";
+                user.PhoneNumber = "555-1234";
                 await userManager.CreateAsync(user, adminPassword);
             }
+
+
+            //UserManager<IdentityUser> userManager = app.ApplicationServices
+            //    .GetRequiredService<UserManager<IdentityUser>>();
+
+            //IdentityUser user = await userManager.FindByIdAsync(adminUser);
+
+            //if (user == null)
+            //{
+            //    user = new IdentityUser("Admin");
+            //    await userManager.CreateAsync(user, adminPassword);
+            //}
         }
     }
 }
