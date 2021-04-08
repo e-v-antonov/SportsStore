@@ -1,12 +1,14 @@
-﻿using SportsStore.Models;
-using System.Linq;
+﻿using System.Linq;
+using SportsStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SportsStore.Controllers
 {
     /// <summary>
     /// Класс контроллера для управления каталогом товаров
     /// </summary>
+    [Authorize]
     public class AdminController : Controller
     {
         private IProductRepository repository;
